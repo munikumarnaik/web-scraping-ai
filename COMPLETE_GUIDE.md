@@ -106,17 +106,17 @@ DB_USER=pavankumarnaikmude
 DB_HOST=localhost
 
 # Cloudflare R2 Storage
-R2_ENDPOINT=https://fd3df45349eb5c03b50e521ad52f88e8.r2.cloudflarestorage.com
-R2_BUCKET_NAME=dev-hymu
-R2_ACCESS_KEY_ID=0e4dff67e5adff64e76dfe84edd52104
+R2_ENDPOINT=https://knvkdjnvkejdnvkdjnv
+R2_BUCKET_NAME=first_app
+R2_ACCESS_KEY_ID=svnjdbvdjbsj
 
 # Firecrawl API
-FIRECRAWL_API_KEY=fc-e216d6ab6935403bb05906afb27c9fc2
+FIRECRAWL_API_KEY=vkjdnvkjenvkednvkdnviej
 SCRAPING_PROVIDER=firecrawl
 
 # Celery + Redis
-CELERY_BROKER_URL=redis://localhost:6379/0
-CELERY_RESULT_BACKEND=redis://localhost:6379/0
+CELERY_BROKER_URL=redis://localhost/0000/1
+CELERY_RESULT_BACKEND=redis://localhost:0000/0
 ```
 
 ### What You Need to Add
@@ -135,7 +135,7 @@ ANTHROPIC_API_KEY=your-key-here
 
 ## API Reference
 
-Base URL: `http://localhost:8000/api`
+Base URL: `http://localhost:0000/api`
 
 ### 1. Create Analysis
 
