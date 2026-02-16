@@ -1,6 +1,3 @@
 # Nixpacks configuration for Django on Railway
-[phases.setup]
-nixPkgs = ["...", "postgresql"]
-
 [start]
 cmd = "bash start.sh"
