@@ -5,6 +5,7 @@ from celery import shared_task
 from django.utils import timezone
 from .models import DomainAnalysis, SalesTraining, ScrapingLog
 from .services import DomainScraper, PDFGenerator, S3Uploader, LLMService
+from .utils import execute_task
 
 logger = logging.getLogger(__name__)
 
@@ -76,8 +77,8 @@ def process_domain_analysis(self, analysis_id: int):
         if json_url:
             analysis.json_url = json_url
 
-        # Step 5: Generate sales training modules
-        generate_sales_training_modules.delay(analysis.id, business_intelligence)
+        # Step 5: Generate sales training modules (with fallback)
+        execute_task(generate_sales_training_modules, analysis.id, business_intelligence)
 
         # Mark as completed
         analysis.mark_completed()

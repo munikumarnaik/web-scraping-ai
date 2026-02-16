@@ -11,6 +11,7 @@ from .serializers import (
     SalesTrainingSerializer,
 )
 from .tasks import process_domain_analysis
+from .utils import execute_task
 
 
 class DomainAnalysisViewSet(viewsets.ReadOnlyModelViewSet):
@@ -60,8 +61,8 @@ class DomainAnalysisViewSet(viewsets.ReadOnlyModelViewSet):
             status='pending'
         )
 
-        # Trigger async processing
-        process_domain_analysis.delay(analysis.id)
+        # Trigger async processing (with fallback to sync if Redis unavailable)
+        execute_task(process_domain_analysis, analysis.id)
 
         # Return response
         response_serializer = DomainAnalysisSerializer(analysis)
