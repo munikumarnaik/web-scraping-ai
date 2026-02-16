@@ -1,16 +1,6 @@
+# Nixpacks configuration for Django on Railway
 [phases.setup]
-nixPkgs = ["python311", "postgresql"]
-
-[phases.install]
-cmds = [
-    "pip install --upgrade pip",
-    "pip install -r requirements.txt"
-]
-
-[phases.build]
-cmds = [
-    "python manage.py collectstatic --noinput"
-]
+nixPkgs = ["...", "postgresql"]
 
 [start]
 cmd = "bash start.sh"
