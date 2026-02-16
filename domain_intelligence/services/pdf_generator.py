@@ -15,9 +15,10 @@ logger = logging.getLogger(__name__)
 class PDFGenerator:
     """Service for generating PDF reports from business intelligence data"""
 
-    def __init__(self, domain_name: str, business_intelligence: Dict):
+    def __init__(self, domain_name: str, business_intelligence: Dict, scraped_data: Dict = None):
         self.domain_name = domain_name
         self.bi_data = business_intelligence
+        self.scraped_data = scraped_data or {}
         self.styles = getSampleStyleSheet()
         self._setup_custom_styles()
 
@@ -127,6 +128,17 @@ class PDFGenerator:
         self._add_section(story, "13. Sales Upskilling Recommendations",
                           self._format_upskilling(self.bi_data.get('sales_upskilling_recommendations', [])))
 
+        # Add external data section if available
+        if self.scraped_data:
+            story.append(PageBreak())
+
+            # Recent news section
+            external_data = self.scraped_data.get('external_data', {})
+            news_items = external_data.get('news', [])
+            if news_items:
+                self._add_section(story, "14. Recent News & Market Updates",
+                                  self._format_news(news_items))
+
         doc.build(story)
         buffer.seek(0)
         return buffer
@@ -195,6 +207,46 @@ class PDFGenerator:
                     f"<b>Priority:</b> {priority}<br/>"
                     f"<b>Expected Outcome:</b> {expected_outcome}<br/><br/>"
                 )
+            else:
+                formatted_items.append(f"• {item}<br/>")
+
+        return "".join(formatted_items)
+
+    def _format_news(self, news_items: list) -> str:
+        """Format news articles with titles, URLs, sources, and content"""
+        if not news_items:
+            return "No recent news available"
+
+        formatted_items = []
+        for idx, item in enumerate(news_items, 1):
+            if isinstance(item, dict):
+                title = item.get('title', 'N/A')
+                url = item.get('url', '')
+                source = item.get('source', 'Unknown')
+                published = item.get('published', '')
+                content = item.get('content', '')
+
+                # Format article with content
+                if url and url.startswith('http'):
+                    formatted_items.append(
+                        f"<b>{idx}. {title}</b><br/>"
+                        f"<b>Source:</b> {source}"
+                        f"{' | <b>Published:</b> ' + published if published else ''}<br/>"
+                        f"<b>URL:</b> <a href='{url}'>{url[:60]}...</a><br/>"
+                    )
+                else:
+                    formatted_items.append(
+                        f"<b>{idx}. {title}</b><br/>"
+                        f"<b>Source:</b> {source}"
+                        f"{' | <b>Published:</b> ' + published if published else ''}<br/>"
+                    )
+
+                # Add article content if available
+                if content and content != "Content not available":
+                    formatted_items.append(f"<b>Summary:</b> {content}<br/><br/>")
+                else:
+                    formatted_items.append("<br/>")
+
             else:
                 formatted_items.append(f"• {item}<br/>")
 

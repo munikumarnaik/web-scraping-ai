@@ -81,7 +81,18 @@ class LLMService:
         linkedin = external_data.get('linkedin', {})
         industry_insights = external_data.get('industry_insights', {})
 
-        news_summary = "\n".join([f"- {item.get('title', '')}" for item in news[:3]]) if news else "No recent news available"
+        # Include news titles and content summaries
+        news_summary = ""
+        if news:
+            for idx, item in enumerate(news[:5], 1):
+                title = item.get('title', '')
+                content = item.get('content', '')
+                if content and content != "Content not available":
+                    news_summary += f"{idx}. {title}\n   Summary: {content[:200]}...\n\n"
+                else:
+                    news_summary += f"{idx}. {title}\n\n"
+        else:
+            news_summary = "No recent news available"
         market_snippets = "\n".join([f"- {snippet}" for snippet in industry_insights.get('market_snippets', [])[:2]]) if industry_insights else "No market insights available"
 
         prompt = f"""You are a business intelligence and sales strategist AI.

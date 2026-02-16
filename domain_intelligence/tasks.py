@@ -53,7 +53,7 @@ def process_domain_analysis(self, analysis_id: int):
         analysis.save()
 
         # Step 3: Generate and upload PDF
-        pdf_generator = PDFGenerator(analysis.domain_name, business_intelligence)
+        pdf_generator = PDFGenerator(analysis.domain_name, business_intelligence, scraped_data)
         pdf_buffer = pdf_generator.generate()
 
         s3_uploader = S3Uploader()
