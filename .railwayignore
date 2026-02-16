@@ -1,0 +1,32 @@
+# Railway ignore file
+.git
+.gitignore
+.env
+.env.example
+*.md
+README.md
+COMPLETE_GUIDE.md
+RAILWAY_DEPLOYMENT.md
+RAILWAY_FIX.md
+DEPLOYMENT_DEBUG.md
+
+# Local development
+.vscode
+.idea
+__pycache__
+*.pyc
+*.pyo
+*.pyd
+.pytest_cache
+.coverage
+htmlcov
+
+# Docker (not needed for Nixpacks)
+Dockerfile
+docker-compose.yml
+.dockerignore
+
+# Media and logs (regenerated)
+media/
+logs/
+*.log
