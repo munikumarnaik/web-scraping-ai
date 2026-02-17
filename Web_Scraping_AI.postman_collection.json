@@ -1,0 +1,222 @@
+{
+  "info": {
+    "name": "Web Scraping AI - Domain Intelligence API",
+    "description": "Complete API collection for Domain Intelligence & Sales Training platform",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+    "_postman_id": "web-scraping-ai-collection",
+    "version": "1.0.0"
+  },
+  "variable": [
+    {
+      "key": "base_url",
+      "value": "https://web-scraping-ai-development.up.railway.app",
+      "type": "string"
+    },
+    {
+      "key": "analysis_id",
+      "value": "1",
+      "type": "string"
+    }
+  ],
+  "item": [
+    {
+      "name": "Health & System",
+      "item": [
+        {
+          "name": "Health Check",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{base_url}}/",
+              "host": ["{{base_url}}"],
+              "path": [""]
+            },
+            "description": "Check if the API is running"
+          },
+          "response": []
+        }
+      ]
+    },
+    {
+      "name": "Domain Analysis",
+      "item": [
+        {
+          "name": "Create Domain Analysis",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "if (pm.response.code === 201) {",
+                  "    const response = pm.response.json();",
+                  "    pm.collectionVariables.set('analysis_id', response.analysis.id);",
+                  "    console.log('Analysis ID saved:', response.analysis.id);",
+                  "}"
+                ],
+                "type": "text/javascript"
+              }
+            }
+          ],
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"domain_name\": \"example.com\"\n}"
+            },
+            "url": {
+              "raw": "{{base_url}}/api/analyses/create_analysis/",
+              "host": ["{{base_url}}"],
+              "path": ["api", "analyses", "create_analysis", ""]
+            },
+            "description": "Create a new domain analysis. This will scrape the domain, generate business intelligence, create PDFs, and generate sales training modules."
+          },
+          "response": []
+        },
+        {
+          "name": "List All Analyses",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{base_url}}/api/analyses/",
+              "host": ["{{base_url}}"],
+              "path": ["api", "analyses", ""]
+            },
+            "description": "Get a list of all domain analyses"
+          },
+          "response": []
+        },
+        {
+          "name": "Get Specific Analysis",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{base_url}}/api/analyses/{{analysis_id}}/",
+              "host": ["{{base_url}}"],
+              "path": ["api", "analyses", "{{analysis_id}}", ""]
+            },
+            "description": "Get detailed information about a specific analysis"
+          },
+          "response": []
+        },
+        {
+          "name": "Check Analysis Status",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{base_url}}/api/analyses/{{analysis_id}}/status_check/",
+              "host": ["{{base_url}}"],
+              "path": ["api", "analyses", "{{analysis_id}}", "status_check", ""]
+            },
+            "description": "Check the current status of an analysis (pending, scraping, analyzing, completed, failed)"
+          },
+          "response": []
+        },
+        {
+          "name": "Download PDF Report",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{base_url}}/api/analyses/{{analysis_id}}/download_pdf/",
+              "host": ["{{base_url}}"],
+              "path": ["api", "analyses", "{{analysis_id}}", "download_pdf", ""]
+            },
+            "description": "Get the PDF download URL for the analysis report"
+          },
+          "response": []
+        },
+        {
+          "name": "Download JSON Data",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{base_url}}/api/analyses/{{analysis_id}}/download_json/",
+              "host": ["{{base_url}}"],
+              "path": ["api", "analyses", "{{analysis_id}}", "download_json", ""]
+            },
+            "description": "Get the JSON download URL containing all scraped data and business intelligence"
+          },
+          "response": []
+        },
+        {
+          "name": "Get Training Modules for Analysis",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{base_url}}/api/analyses/{{analysis_id}}/training_modules/",
+              "host": ["{{base_url}}"],
+              "path": ["api", "analyses", "{{analysis_id}}", "training_modules", ""]
+            },
+            "description": "Get all sales training modules generated for this domain analysis"
+          },
+          "response": []
+        }
+      ]
+    },
+    {
+      "name": "Sales Training",
+      "item": [
+        {
+          "name": "List All Training Modules",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{base_url}}/api/training/",
+              "host": ["{{base_url}}"],
+              "path": ["api", "training", ""]
+            },
+            "description": "Get a list of all sales training modules across all analyses"
+          },
+          "response": []
+        },
+        {
+          "name": "Filter Training by Analysis ID",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{base_url}}/api/training/?analysis_id={{analysis_id}}",
+              "host": ["{{base_url}}"],
+              "path": ["api", "training", ""],
+              "query": [
+                {
+                  "key": "analysis_id",
+                  "value": "{{analysis_id}}"
+                }
+              ]
+            },
+            "description": "Get training modules filtered by a specific analysis ID"
+          },
+          "response": []
+        },
+        {
+          "name": "Get Specific Training Module",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{base_url}}/api/training/1/",
+              "host": ["{{base_url}}"],
+              "path": ["api", "training", "1", ""]
+            },
+            "description": "Get detailed information about a specific training module"
+          },
+          "response": []
+        }
+      ]
+    }
+  ]
+}
